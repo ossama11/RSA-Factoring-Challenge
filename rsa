@@ -1,0 +1,38 @@
+#!/usr/bin/python3
+
+import sys
+import math
+
+
+def is_prime(number):
+    if number == 2 or number == 3:
+        return True
+    if number < 2 or number % 2 == 0:
+        return False
+    for i in range(3, int(math.sqrt(number)) + 1, 2):
+        if number % i == 0:
+            return False
+    return True
+
+
+def factorize(number):
+    for i in range(2, number):
+        if number % i == 0 and is_prime(i) and is_prime(number // i):
+            return f"{number}={number // i}*{i}"
+    return f"Unable to factorize {number}"
+
+
+def main(filename):
+    with open(filename, 'r') as file:
+        number = int(file.read().strip())
+        factorization = factorize(number)
+        print(factorization)
+
+
+if __name__ == '__main__':
+    if len(sys.argv) < 2:
+        print("Usage: rsa <file>")
+        print("where <file> is a file containing an RSA number to factorize.")
+        sys.exit(1)
+    filename = sys.argv[1]
+    main(filename)
